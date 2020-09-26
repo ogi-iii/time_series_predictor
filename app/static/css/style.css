@@ -1,0 +1,77 @@
+body {
+    font-family: sans-serif;
+    width: 100%;
+    text-align: center;
+}
+
+.background {
+    background-color:#87cefa;
+    width: 100%;
+    height: 100%;
+}
+
+.top {
+    display: inline-block;
+    width: 80%;
+    padding-top: 50px;
+}
+
+.mainTitle {
+    float: left;
+    display: inline-block;
+    text-align: left;
+    padding: 0 15px;
+    color: white;
+    margin: 0 0 0 0;
+    font-size: 45px;
+    width: 400px;
+}
+
+.subTitle {
+    padding: 0 0 50px;
+    color: white;
+    margin: 0 0 0 0;
+    font-size: 35px;
+}
+
+.git {
+    float: right;
+    text-align: center;
+    display: inline-block;
+    padding: 0 15px 10px;
+    width: 100px;
+}
+
+.img-div {
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    width: 30%;
+    min-width: 220px;
+}
+
+.sub-img-div {
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    width: 10%;
+    min-width: 70px;
+}
+
+.top-img {
+    width: 100%;
+}
+
+.btns {
+    display: inline-block;
+    width: 80%;
+    text-align: center;
+    margin: 0 auto;
+    padding-bottom: 70px;
+}
+
+.next-btn {
+    margin: 30px auto;
+    font-size: 32px;
+}
+
