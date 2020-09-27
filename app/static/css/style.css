@@ -4,6 +4,10 @@ body {
     text-align: center;
 }
 
+td, .td {
+    line-height: 50px;
+}
+
 .body-wrapper {
     background-color:#87cefa;
     width: 100%;
@@ -95,6 +99,18 @@ body {
     text-align: left;
     padding-bottom: 30px;
     color: white;
+}
+
+.table-wrapper {
+    display: inline-block;
+    width: 70%;
+    text-align: left;
+    padding-bottom: 30px;
+    color: white;
+}
+
+.table {
+    border-bottom: 1px solid;
 }
 
 .r-top {

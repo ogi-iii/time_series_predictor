@@ -4,6 +4,30 @@
     <img src="/static/imgs/history.png" alt="history icon" class="top-img">
 </div>
 <h2 class="subTitle">Analytics History</h2>
+<div class="table-wrapper">
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">predicted date</th>
+            <th scope="col">name</th>
+            <th scope="col">plot</th>
+            <th scope="col">csv</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i, hist in enumerate_hist %}
+            <tr>
+                <th scope="row" class="td">{{i + 1}}</th>
+                <td>{{hist.date}}</td>
+                <td>{{hist.name}}</td>
+                <td><a href="{{hist.plot}}"><img src="/static/imgs/download.png" alt="download button" class="r-d-img"></a></td>
+                <td><a href="{{hist.csv}}"><img src="/static/imgs/download.png" alt="download button" class="r-d-img"></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 <div class="r-top">
     <p>
         <a href="/" class="btn btn-outline-light">TOP</a>

@@ -61,14 +61,14 @@ def output_results(sarimax,
                 index_col: str,
                 target_col: str,
                 output_fig_dir: str,
-                output_csv_dir: str,
+                # output_csv_dir: str,
                 ) -> list:
     dt_now = datetime.datetime.now()
     ts_pred = sarimax.get_prediction(pred_begin, pred_end)
     pred_conf_int = ts_pred.conf_int(alpha=0.05) # 95%
 
     plot_fname = f"{dt_now}_{csv_name.split('/')[-1].split('.')[0]}.png"
-    csv_fname = f"{dt_now}_{csv_name.split('/')[-1].split('.')[0]}_pred.csv"
+    # csv_fname = f"{dt_now}_{csv_name.split('/')[-1].split('.')[0]}_pred.csv"
 
     # predict future values
     fig = plt.figure(figsize=(12, 5))
@@ -88,6 +88,8 @@ def output_results(sarimax,
     output_df = pd.concat([ts, ts_pred.predicted_mean, pred_conf_int], axis=1)
     output_df.columns = [output_df.columns[0], f"prediction {output_df.columns[0]}",
                         pred_conf_int.columns[0], pred_conf_int.columns[1]]
-    output_df.to_csv(os.path.join(output_csv_dir, csv_fname))
+    output_df.index.name = index_col
+    # output_df.to_csv(os.path.join(output_csv_dir, csv_fname))
 
-    return [plot_fname, csv_fname]
+    # return [plot_fname, csv_fname]
+    return [plot_fname, output_df]

@@ -1,5 +1,6 @@
 import os
 import base64
+import json
 import numpy as np
 import pandas as pd
 from scipy import stats
@@ -7,9 +8,9 @@ from scipy import signal
 import statsmodels.api as sm
 from matplotlib import pyplot as plt
 import seaborn as sns
-sns.set() #plotの準備
+sns.set() #plot preparation
 import warnings
-warnings.filterwarnings('ignore') # 計算警告を非表示
+warnings.filterwarnings('ignore') # ignore warning
 
 from flask import Flask, render_template, request
 import tempfile
@@ -43,14 +44,14 @@ def analysis():
 @app.route('/results', methods=['POST'])
 def results():
     title = "results"
-    # requestから受け取る
+    # form comtents
     file = request.files['csvFile']
     csv_name = file.filename
     index_col = request.form["datetimeIndex"]
     target_col = request.form["targetColumn"]
     pred_begin = str(request.form["predBeginDate"]).replace('/', '-') + " " + str(request.form["predBeginTime"])
     pred_end = str(request.form["predEndDate"]).replace('/', '-') + " " + str(request.form["predEndTime"])
-    # SARIMA実行
+    # learning process
     with tempfile.NamedTemporaryFile() as tf:
         csv = tf.name
         file.save(csv)
@@ -60,9 +61,9 @@ def results():
                     )
     p, d, q, sfq = select_order(ts, d = 1, freq_order = 5)
     sarimax = fit_sarima(ts, p, d, q, sfq, sp = 1, sd = 1, sq = 1)
-    # csvと画像の出力
+    # output csv & image
     with tempfile.TemporaryDirectory() as temp_dir:
-        plot_fname, csv_fname = output_results(sarimax,
+        plot_fname, output_df = output_results(sarimax,
                                             pred_begin,
                                             pred_end,
                                             ts,
@@ -70,12 +71,20 @@ def results():
                                             index_col,
                                             target_col,
                                             temp_dir,
-                                            temp_dir,
                                             )
         with open(os.path.join(temp_dir, plot_fname), "rb") as f:
             img_base64 = base64.b64encode(f.read()).decode('utf-8')
 
-        # TODO: csvファイルのdict化
+    # TODO: json
+    results_dict = {
+        "img": img_base64,
+        "csv": output_df.to_dict(),
+        "csv_index": index_col,
+        }
+    # json_str = json.dumps(d)
+    # df = pd.DataFrame().from_dict(results_dict["csv"])
+    # df.index.name = results_dict["csv_index"]
+
 
     # TODO: lambda API collaboration
     #       1) upload csv & img to s3
@@ -88,12 +97,26 @@ def results():
 def history():
     title = "history"
 
-    # TODO: history table
-
     # TODO: lambda API collaboration
     #       1) read lines from dynamoDB
 
-    return render_template('history.html', title=title)
+    # あとで消す
+    history = []
+    history.append({
+        "date": "2020-09-28 00:17:31.716364",
+        "name": "AirPassengers",
+        "plot": "https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv",
+        "csv": "https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv",
+        })
+    history.append({
+        "date": "2020-09-29 10:17:31.716364",
+        "name": "AirPassengers2",
+        "plot": "https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv",
+        "csv": "https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv",
+        })
+    # ここまで
+
+    return render_template('history.html', title=title, enumerate_hist=enumerate(history))
 
 
 if __name__ == "__main__":
