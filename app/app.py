@@ -1,6 +1,7 @@
 import os
 import base64
 import json
+import urllib
 import numpy as np
 import pandas as pd
 from scipy import stats
@@ -75,20 +76,23 @@ def results():
         with open(os.path.join(temp_dir, plot_fname), "rb") as f:
             img_base64 = base64.b64encode(f.read()).decode('utf-8')
 
-    # TODO: json
-    results_dict = {
-        "img": img_base64,
-        "csv": output_df.to_dict(),
-        "csv_index": index_col,
-        }
-    # json_str = json.dumps(d)
-    # df = pd.DataFrame().from_dict(results_dict["csv"])
-    # df.index.name = results_dict["csv_index"]
-
-
     # TODO: lambda API collaboration
-    #       1) upload csv & img to s3
-    #       2) write urls in dynamoDB
+    # 1) upload csv & img to s3
+    # 2) write urls in dynamoDB
+    # url = "http://xxxx/xxxx"
+    # json_data = json.dumps({
+    #     "img": img_base64,
+    #     "df_dict": output_df.to_dict(),
+    #     "df_index": index_col,
+    #     }).encode("utf-8")
+    # method = "POST"
+    # headers = {"Content-Type" : "application/json"}
+    # request = urllib.request.Request(url, data=json_data, method=method, headers=headers)
+    # with urllib.request.urlopen(request) as response:
+    #     response_body = response.read().decode("utf-8")
+    #     result_objs = json.loads(response_body)
+    # df = pd.DataFrame().from_dict(results_dict["df_dict"])
+    # df.index.name = results_dict["df_index"]
 
     return render_template('results.html', title=title, img_base64=img_base64)
 
