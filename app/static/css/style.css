@@ -4,7 +4,7 @@ body {
     text-align: center;
 }
 
-.background {
+.body-wrapper {
     background-color:#87cefa;
     width: 100%;
     height: 100%;
@@ -14,6 +14,27 @@ body {
     display: inline-block;
     width: 80%;
     padding-top: 50px;
+}
+
+.git {
+    float: right;
+    text-align: center;
+    display: inline-block;
+    padding: 0 15px 10px;
+    width: 100px;
+}
+
+.btns {
+    display: inline-block;
+    width: 80%;
+    text-align: center;
+    margin: 0 auto;
+    padding-bottom: 150px;
+}
+
+.next-btn {
+    margin: 30px auto;
+    font-size: 32px;
 }
 
 .mainTitle {
@@ -34,12 +55,11 @@ body {
     font-size: 35px;
 }
 
-.git {
-    float: right;
-    text-align: center;
-    display: inline-block;
-    padding: 0 15px 10px;
-    width: 100px;
+.resultTitle {
+    padding: 20px 0 15px;
+    color: white;
+    margin: 0 0 0 0;
+    font-size: 35px;
 }
 
 .img-div {
@@ -58,20 +78,46 @@ body {
     min-width: 70px;
 }
 
+.result-img-div {
+    display: block;
+    margin: 20px auto 50px;
+    text-align: center;
+    width: 60%;
+}
+
 .top-img {
     width: 100%;
 }
 
-.btns {
+.form-wrapper {
     display: inline-block;
-    width: 80%;
-    text-align: center;
-    margin: 0 auto;
-    padding-bottom: 70px;
+    width: 70%;
+    text-align: left;
+    padding-bottom: 30px;
+    color: white;
 }
 
-.next-btn {
-    margin: 30px auto;
-    font-size: 32px;
+.r-top {
+    display: inline-block;
+    width: 70%;
+    font-size: 35px;
+    padding-bottom: 120px;
+    color: white;
 }
 
+.r-downloads {
+    display: inline-block;
+    width: 70%;
+    font-size: 35px;
+    padding-bottom: 30px;
+    color: white;
+}
+
+#download {
+    display: inline-block;
+    width: 280px;
+}
+
+.r-d-img {
+    width: 50px;
+}

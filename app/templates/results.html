@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2 class="resultTitle">Prediction Results</h2>
+<div class="result-img-div">
+    <img src="data:image/png;base64,{{img_base64}}" alt="plot result image" class="top-img">
+</div>
+<div class="r-downloads">
+    <p>
+        <a href="" id="download" class="btn btn-outline-light btn-lg">Download Image <img src="/static/imgs/download.png" alt="download button" class="r-d-img"></a>
+    </p>
+    <p>
+        <a href="" id="download" class="btn btn-outline-light btn-lg">Download CSV <img src="/static/imgs/download.png" alt="download button" class="r-d-img"></a>
+    </p>
+</div>
+<div class="r-top">
+    <p>
+        <a href="/" class="btn btn-outline-light">TOP</a>
+    </p>
+</div>
+</>
+{% endblock %}

@@ -4,5 +4,44 @@
     <img src="/static/imgs/analysis.png" alt="analysis icon" class="top-img">
 </div>
 <h2 class="subTitle">CSV Analysis</h2>
+<div class="form-wrapper">
+    <form action="/results" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="csvFile">Time-Series CSV File</label>
+            <input type="file" class="form-control-file" id="csvFile" name="csvFile" aria-describedby="fileHelp" accept=".csv" required>
+            <small id="fileHelp" class="form-text text-muted">There should be datetime index & analysis target column. <a href="https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv">Example CSV file is here.</a></small>
+        </div>
+        <div class="form-group">
+            <label for="datetimeIndex">Datetime Index Name</label>
+            <input type="text" class="form-control" id="datetimeIndex" name="datetimeIndex" placeholder="datetime" required>
+        </div>
+        <div class="form-group">
+            <label for="targetColumn">Target Column Name</label>
+            <input type="text" class="form-control" id="targetColumn" name="targetColumn" placeholder="target" required>
+        </div>
+        <div class="form-group">
+            <label for="predBeginDate">Prediction Beginning Date</label>
+            <input type="date" class="form-control" id="predBeginDate" name="predBeginDate" required>
+        </div>
+        <div class="form-group">
+            <label for="predBeginTime">Prediction Beginning Time (option)</label>
+            <input type="time" class="form-control" id="predBeginTime" name="predBeginTime">
+        </div>
+        <div class="form-group">
+            <label for="predEndDate">Prediction End Date</label>
+            <input type="date" class="form-control" id="predEndDate" name="predEndDate" required>
+        </div>
+        <div class="form-group">
+            <label for="predEndTime">Prediction End Time (option)</label>
+            <input type="time" class="form-control" id="predEndTime" name="predEndTime">
+        </div>
+        <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
+    </form>
+</div>
+<div class="r-top">
+    <p>
+        <a href="/" class="btn btn-outline-light">TOP</a>
+    </p>
+</div>
 </>
 {% endblock %}
