@@ -1,6 +1,6 @@
 # Quick Start
 
-'''
+```
 cd api/
 
 aws s3 mb s3://tsp-upload-template-ogi
@@ -24,4 +24,4 @@ aws cloudformation deploy \
      --template-file ./packaged-template.yaml \
      --stack-name tsp-hist-api \
      --capabilities CAPABILITY_IAM
-'''
+```
