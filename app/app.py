@@ -15,7 +15,7 @@ warnings.filterwarnings('ignore') # ignore warning
 
 from flask import Flask, render_template, request
 import tempfile
-from module import *
+from module.sarima import *
 
 
 app = Flask(__name__)
@@ -32,7 +32,7 @@ def add_staticfile():
 
 @app.route('/')
 def index():
-    title = "index"
+    title = ""
     return render_template('index.html', title=title)
 
 
@@ -75,26 +75,30 @@ def results():
                                             )
         with open(os.path.join(temp_dir, plot_fname), "rb") as f:
             img_base64 = base64.b64encode(f.read()).decode('utf-8')
+        fname = "tmp.csv"
+        output_df.to_csv(os.path.join(temp_dir, fname))
+        with open(os.path.join(temp_dir, fname)) as f:
+            csv_str = f.read()
 
-    # TODO: lambda API collaboration
-    # 1) upload csv & img to s3
-    # 2) write urls in dynamoDB
-    # url = "http://xxxx/xxxx"
-    # json_data = json.dumps({
-    #     "img": img_base64,
-    #     "df_dict": output_df.to_dict(),
-    #     "df_index": index_col,
-    #     }).encode("utf-8")
-    # method = "POST"
-    # headers = {"Content-Type" : "application/json"}
-    # request = urllib.request.Request(url, data=json_data, method=method, headers=headers)
-    # with urllib.request.urlopen(request) as response:
-    #     response_body = response.read().decode("utf-8")
-    #     result_objs = json.loads(response_body)
-    # df = pd.DataFrame().from_dict(results_dict["df_dict"])
-    # df.index.name = results_dict["df_index"]
+    # TODO: API URL Auto Reference #
+    url = "https://1ird8j7be1.execute-api.ap-northeast-1.amazonaws.com/Prod/createFiles"
+    # until this line #
 
-    return render_template('results.html', title=title, img_base64=img_base64)
+    json_data = json.dumps({
+        "fname": csv_name,
+        "img_base64": img_base64,
+        "csv_str": csv_str,
+        }).encode("utf-8")
+    method = "POST"
+    headers = {"Content-Type" : "application/json"}
+    api_request = urllib.request.Request(url, data=json_data, method=method, headers=headers)
+    with urllib.request.urlopen(api_request) as response:
+        response_body = response.read().decode("utf-8")
+        result_obj = json.loads(response_body)
+        img_url = result_obj["img_url"]
+        csv_url = result_obj["csv_url"]
+
+    return render_template('results.html', title=title, img_base64=img_base64, img_url=img_url, csv_url=csv_url)
 
 
 @app.route('/history')
@@ -107,13 +111,13 @@ def history():
     # あとで消す
     history = []
     history.append({
-        "date": "2020-09-28 00:17:31.716364",
+        "timestamp": "2020-09-28 00:17:31.716364",
         "name": "AirPassengers",
         "plot": "https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv",
         "csv": "https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv",
         })
     history.append({
-        "date": "2020-09-29 10:17:31.716364",
+        "timestamp": "2020-09-29 10:17:31.716364",
         "name": "AirPassengers2",
         "plot": "https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv",
         "csv": "https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv",
