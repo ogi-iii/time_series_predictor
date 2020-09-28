@@ -1,4 +1,5 @@
 import os
+import sys
 import base64
 import json
 import urllib
@@ -80,10 +81,8 @@ def results():
         with open(os.path.join(temp_dir, fname)) as f:
             csv_str = f.read()
 
-    # TODO: API URL Auto Reference #
-    url = "https://5zl66imvp6.execute-api.ap-northeast-1.amazonaws.com/Prod/createFiles"
-    # until this line #
-
+    #tsp-upload API
+    url = sys.argv[1] #URL Reference
     json_data = json.dumps({
         "fname": csv_name,
         "img_base64": img_base64,
@@ -105,9 +104,8 @@ def results():
 def history():
     title = "history"
 
-    # TODO: API URL Auto Reference #
-    url = "https://lecpabuvjd.execute-api.ap-northeast-1.amazonaws.com/Prod/history"
-    # until this line #
+    #tsp-upload API
+    url = sys.argv[2] #URL Reference
 
     api_request = urllib.request.Request(url)
     with urllib.request.urlopen(api_request) as response:
