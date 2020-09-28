@@ -81,7 +81,7 @@ def results():
             csv_str = f.read()
 
     # TODO: API URL Auto Reference #
-    url = "https://1ird8j7be1.execute-api.ap-northeast-1.amazonaws.com/Prod/createFiles"
+    url = "https://5zl66imvp6.execute-api.ap-northeast-1.amazonaws.com/Prod/createFiles"
     # until this line #
 
     json_data = json.dumps({
@@ -105,26 +105,26 @@ def results():
 def history():
     title = "history"
 
-    # TODO: lambda API collaboration
-    #       1) read lines from dynamoDB
+    # TODO: API URL Auto Reference #
+    url = "https://lecpabuvjd.execute-api.ap-northeast-1.amazonaws.com/Prod/history"
+    # until this line #
 
-    # あとで消す
+    api_request = urllib.request.Request(url)
+    with urllib.request.urlopen(api_request) as response:
+        response_body = response.read().decode("utf-8")
+        history_obj = json.loads(response_body)
+
     history = []
-    history.append({
-        "timestamp": "2020-09-28 00:17:31.716364",
-        "name": "AirPassengers",
-        "plot": "https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv",
-        "csv": "https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv",
-        })
-    history.append({
-        "timestamp": "2020-09-29 10:17:31.716364",
-        "name": "AirPassengers2",
-        "plot": "https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv",
-        "csv": "https://www.analyticsvidhya.com/wp-content/uploads/2016/02/AirPassengers.csv",
-        })
-    # ここまで
+    for key, hist in history_obj.items():
+        history.append({
+            "id": key,
+            "timestamp": hist["timestamp"],
+            "name": hist["name"],
+            "img_url": hist["img_url"],
+            "csv_url": hist["csv_url"],
+            })
 
-    return render_template('history.html', title=title, enumerate_hist=enumerate(history))
+    return render_template('history.html', title=title, history=history)
 
 
 if __name__ == "__main__":

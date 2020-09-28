@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: load history list from dynamdb
+Resources:
+  TSPLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./lambda-function
+      Handler: tsp-load-history.lambda_handler
+      Runtime: python3.6
+      Timeout: 60
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        HttpPost:
+          Type: Api
+          Properties:
+            Path: '/history'
+            Method: get

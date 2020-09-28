@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: create img & csv files in s3, register urls in dynamodb
 Resources:
-  TranscriptionLambda:
+  TSPLambda:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ./lambda-function

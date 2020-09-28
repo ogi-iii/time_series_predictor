@@ -11,18 +11,18 @@
             <th scope="col">#</th>
             <th scope="col">timestamp</th>
             <th scope="col">name</th>
-            <th scope="col">plot</th>
+            <th scope="col">image</th>
             <th scope="col">csv</th>
         </tr>
         </thead>
         <tbody>
-        {% for i, hist in enumerate_hist %}
+        {% for hist in history %}
             <tr>
-                <th scope="row" class="td">{{i + 1}}</th>
+                <th scope="row" class="td">{{hist.id}}</th>
                 <td>{{hist.timestamp}}</td>
                 <td>{{hist.name}}</td>
-                <td><a href="{{hist.plot}}"><img src="/static/imgs/download.png" alt="download button" class="r-d-img"></a></td>
-                <td><a href="{{hist.csv}}"><img src="/static/imgs/download.png" alt="download button" class="r-d-img"></a></td>
+                <td><a href="{{hist.img_url}}"><img src="/static/imgs/download.png" alt="download button" class="r-d-img"></a></td>
+                <td><a href="{{hist.csv_url}}"><img src="/static/imgs/download.png" alt="download button" class="r-d-img"></a></td>
             </tr>
         {% endfor %}
         </tbody>

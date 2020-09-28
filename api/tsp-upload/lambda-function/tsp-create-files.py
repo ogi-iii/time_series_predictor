@@ -5,7 +5,7 @@ import base64
 
 img_s3 = boto3.resource('s3')
 csv_s3 = boto3.resource('s3')
-dynamodb_stp_history_tbl = boto3.resource('dynamodb').Table('tsp-history')
+dynamodb_tsp_history_tbl = boto3.resource('dynamodb').Table('tsp-history')
 
 def lambda_handler(event, context):
     img_bucket = 'tsp-img-ogi'
@@ -15,7 +15,7 @@ def lambda_handler(event, context):
         body = json.loads(event.get("body"))
         img_url = _output_files(img_s3, img_bucket, body, "img_base64", "png", date_time)
         csv_url = _output_files(csv_s3, csv_bucket, body, "csv_str", "csv", date_time)
-        dynamodb_stp_history_tbl.put_item(
+        dynamodb_tsp_history_tbl.put_item(
             Item = {
                 "timestamp": date_time,
                 "img_url": img_url,
