@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: load history list from dynamdb
+Description: load history list from dynamodb
 Resources:
   TSPLambda:
     Type: AWS::Serverless::Function
@@ -17,3 +17,9 @@ Resources:
           Properties:
             Path: '/history'
             Method: get
+
+Outputs:
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  TSPHistoryLambdaApi:
+    Description: "API Gateway endpoint URL for Prod stage (GET)"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/history/"

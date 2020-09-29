@@ -18,6 +18,7 @@ Resources:
           Properties:
             Path: '/createFiles'
             Method: post
+
   ImgBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
@@ -28,6 +29,7 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       BucketName: tsp-csv-ogi
+
   TSPDynamoDbTbl:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -38,3 +40,9 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
+
+Outputs:
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  TSPUploadLambdaApi:
+    Description: "API Gateway endpoint URL for Prod stage (POST)"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/createFiles/"

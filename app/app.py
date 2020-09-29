@@ -122,8 +122,8 @@ def history():
             "csv_url": hist["csv_url"],
             })
 
-    return render_template('history.html', title=title, history=history)
+    return render_template('history.html', title=title, history=history.reverse())
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0', port=8000)
