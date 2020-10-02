@@ -2,4 +2,48 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Security Groups
 
 Resources:
-  
+  appAlbSg:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: tsp-app-alb-sg
+      GroupDescription: tsp-app-alb-sg
+      VpcId:
+        Fn::ImportValue:
+          tsp-vpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8000
+          ToPort: 8000
+          CidrIp: 0.0.0.0/0
+          Description: all
+      Tags:
+        - Key: Name
+          Value: tsp-app-alb-sg
+
+  appFargateSg:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: tsp-app-fargate-sg
+      GroupDescription: tsp-app-fargate-sg
+      VpcId:
+        Fn::ImportValue:
+          tsp-vpc
+        SecurityGroupIngress:
+          - IpProtocol: tcp
+            FromPort: 8000
+            ToPort: 8000
+            SourceSecurityGroupId: !Ref appAlbSg
+            Description: tsp-app-alb-sg
+        Tags:
+          - Key: Name
+            Value: tsp-app-fargate-sg
+
+Outputs:
+  appAlbSg:
+    Value: !Ref appAlbSg
+    Export:
+      Name: tsp-app-alb-sg
+  appFargateSg:
+    Value: !Ref appFargateSg
+    Export:
+      Name: tsp-app-fargate-sg
