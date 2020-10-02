@@ -1,0 +1,192 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: VPC Network
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: "true"
+      EnableDnsHostnames: "true"
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value: tsp-vpc
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: tsp-igw
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicSubnet1a:
+    Type: AWS::EC2::Subnet
+    DependsOn: AttachGateway
+    Properties:
+      AvailabilityZone: ap-northeast-1a
+      CidrBlock: 10.0.0.0/24
+      MapPublicIpOnLaunch: "true"
+      Tags:
+      - Key: Name
+        Value: tsp-public-subnet-1a
+  PublicSubnet1c:
+    Type: AWS::EC2::Subnet
+    DependsOn: AttachGateway
+    Properties:
+      AvailabilityZone: ap-northeast-1c
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: "true"
+      Tags:
+      - Key: Name
+        Value: tsp-public-subnet-1c
+
+  PrivateSubnet1a:
+    Type: AWS::EC2::Subnet
+    DependsOn: AttachGateway
+    Properties:
+      AvailabilityZone: ap-northeast-1a
+      CidrBlock: 10.0.10.0/24
+      MapPublicIpOnLaunch: "false"
+      Tags:
+      - Key: Name
+        Value: tsp-private-subnet-1a
+  PrivateSubnet1c:
+    Type: AWS::EC2::Subnet
+    DependsOn: AttachGateway
+    Properties:
+      AvailabilityZone: ap-northeast-1c
+      CidrBlock: 10.0.11.0/24
+      MapPublicIpOnLaunch: "false"
+      Tags:
+      - Key: Name
+        Value: tsp-private-subnet-1c
+
+  EIP1a:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+  NAT1a:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - EIP1a
+          - AllocationId
+      SubnetId: !Ref PublicSubnet1a
+      Tags:
+      - Key: Name
+        Value: tsp-ngw-1a
+
+  EIP1c:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+  NAT1c:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - EIP1c
+          - AllocationId
+      SubnetId: !Ref PublicSubnet1c
+      Tags:
+      - Key: Name
+        Value: tsp-ngw-1c
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    DependsOn: AttachGateway
+    Properties:
+    VpcId: !Ref VPC
+    Tags:
+    - Key: Name
+      Value: tsp-public-rt
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PrivateRouteTable1a:
+    Type: AWS::EC2::RouteTable
+    DependsOn: NAT1a
+    Properties:
+    VpcId: !Ref VPC
+    Tags:
+    - Key: Name
+      Value: tsp-private-rt1a
+  PrivateRoute1a:
+    Type: AWS::EC2::Route
+    DependsOn: NAT1a
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1a
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NAT1a
+
+  PrivateRouteTable1c:
+    Type: AWS::EC2::RouteTable
+    DependsOn: NAT1c
+    Properties:
+    VpcId: !Ref VPC
+    Tags:
+    - Key: Name
+      Value: tsp-private-rt1c
+  PrivateRoute1a:
+    Type: AWS::EC2::Route
+    DependsOn: NAT1c
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1c
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NAT1c
+
+  PublicSubnet1aRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1a
+      RouteTableId: !Ref PublicRouteTable
+  PublicSubnet1cRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1c
+      RouteTableId: !Ref PublicRouteTable
+
+  PrivateSubnet1aRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1a
+      RouteTableId: !Ref PrivateRouteTable1a
+  PrivateSubnet1cRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1c
+      RouteTableId: !Ref PrivateRouteTable1c
+
+Outputs:
+  VPC:
+    Value: !Ref VPC
+    Export:
+      Name: tsp-vpc
+  PublicSubnet1a:
+    Value: !Ref PublicSubnet1a
+    Export:
+      Name: tsp-public-subnet-1a
+  PublicSubnet1c:
+    Value: !Ref PublicSubnet1c
+    Export:
+      Name: tsp-public-subnet-1c
+  PrivateSubnet1a:
+    Value: !Ref PrivateSubnet1a
+    Export:
+      Name: tsp-private-subnet-1a
+  PrivateSubnet1c:
+    Value: !Ref PrivateSubnet1c
+    Export:
+      Name: tsp-private-subnet-1c
