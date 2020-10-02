@@ -2,3 +2,22 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: CodeCommit
 
 Resources:
+  codeCommitPyApp:
+    Type: AWS::CodeCommit::Repository
+    Properties:
+      RepositoryName: tsp-codecommit-py-app
+      RepositoryDescription: tsp-codecommit-py-app
+
+Outputs:
+  codeCommitPyApp:
+    Value: !Ref codeCommitPyApp
+    Export:
+      Name: tsp-codecommit-py-app
+  codeCommitPyAppName:
+    Value: !GetAtt codeCommitPyApp.Name
+    Export:
+      Name: tsp-codecommit-py-app-name
+  codeCommitPyAppArn:
+    Value: !GetAtt codeCommitPyApp.Arn
+    Export:
+      Name: tsp-codecommit-py-app-arn
