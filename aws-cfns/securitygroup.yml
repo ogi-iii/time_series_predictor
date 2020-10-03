@@ -8,8 +8,7 @@ Resources:
       GroupName: tsp-app-alb-sg
       GroupDescription: tsp-app-alb-sg
       VpcId:
-        Fn::ImportValue:
-          tsp-vpc
+        Fn::ImportValue: tsp-vpc
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 8000
@@ -26,8 +25,7 @@ Resources:
       GroupName: tsp-app-fargate-sg
       GroupDescription: tsp-app-fargate-sg
       VpcId:
-        Fn::ImportValue:
-          tsp-vpc
+        Fn::ImportValue: tsp-vpc
         SecurityGroupIngress:
           - IpProtocol: tcp
             FromPort: 8000
