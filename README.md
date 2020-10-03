@@ -42,9 +42,9 @@ git clone https://github.com/ogi-iii/time_series_predictor.git
 cd time_series_predictor
 
 # Deploy APIs on AWS
-quickStartApi.sh
+./quickStartApi.sh
 # Run Local Environment
-quickRunLocalApp.sh
+./quickRunLocalApp.sh
 ```
 
 ## Deploy on AWS
@@ -55,9 +55,9 @@ git clone https://github.com/ogi-iii/time_series_predictor.git
 cd time_series_predictor
 
 # Deploy APIs on AWS
-quickStartApi.sh
+./quickStartApi.sh
 # Create Resources & Deploy on AWS
-quickStartEcsApp.sh
+./quickStartEcsApp.sh
 ```
 
 # App Architecture on AWS
