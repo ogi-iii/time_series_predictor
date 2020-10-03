@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: ECS Cluster
+
+Resources:
+  ecsCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: tsp-cluster
+      ClusterSettings:
+        - Name: containerInsights
+          Value: enabled
+  logGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: tsp-loggroup
+
+Outputs:
+  ecsCluster:
+    Value: !Ref ecsCluster
+    Export:
+      Name: tsp-cluster
+  logGroup:
+    Value: !Ref logGroup
+    Export:
+      Name: tsp-loggroup

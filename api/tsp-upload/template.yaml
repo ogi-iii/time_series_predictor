@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: create img & csv files in s3, register urls in dynamodb
+Resources:
+  TSPLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./lambda-function
+      Handler: tsp-create-files.lambda_handler
+      Runtime: python3.6
+      Timeout: 60
+      Policies:
+        - AmazonS3FullAccess
+        - AmazonDynamoDBFullAccess
+      Events:
+        HttpPost:
+          Type: Api
+          Properties:
+            Path: '/createFiles'
+            Method: post
+
+  ImgBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: tsp-img-ogi
+  CsvBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: tsp-csv-ogi
+
+  TSPDynamoDbTbl:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: tsp-history
+      PrimaryKey:
+        Name: timestamp
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+Outputs:
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  TSPUploadLambdaApi:
+    Description: "API Gateway endpoint URL for Prod stage (POST)"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/createFiles/"

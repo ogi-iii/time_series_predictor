@@ -1,0 +1,145 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: App alb fargate
+
+Parameters:
+  ImageUri:
+    Type: String
+    Description: App Image URI
+
+Resources:
+
+  appALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: tsp-app-alb
+      Scheme: internet-facing
+      Type: application
+      Subnets:
+        - Fn::ImportValue: tsp-public-subnet-1a
+        - Fn::ImportValue: tsp-public-subnet-1c
+      SecurityGroups:
+        - Fn::ImportValue: tsp-app-alb-sg
+  appAlbTg:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: tsp-app-alb-tg
+      Protocol: HTTP
+      Port: 8000
+      TargetType: ip
+      VpcId:
+        Fn::ImportValue: tsp-vpc
+      HealthCheckProtocol: HTTP
+      HealthCheckPath: /
+      HealthCheckPort: traffic-port
+      HealthyThresholdCount: 5
+      UnhealthyThresholdCount: 2
+      HealthCheckTimeoutSeconds: 5
+      HealthCheckIntervalSeconds: 30
+      Matcher:
+        HttpCode: 200
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
+  appListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref appALB
+      Protocol: HTTP
+      Port: 8000
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref appAlbTg
+
+  appTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "ecs-tasks.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+
+  appTask:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: tsp-app-task
+      RequiresCompatibilities:
+        - FARGATE
+      NetworkMode: awsvpc
+      TaskRoleArn: !Ref appTaskExecutionRole
+      ExecutionRoleArn: !Ref appTaskExecutionRole
+      Cpu: 256
+      Memory: 512
+      ContainerDefinitions:
+        - Name: app
+          Image: !Ref ImageUri
+          PortMappings:
+            - Protocol: tcp
+              HostPort: 8000
+              ContainerPort: 8000
+              LogConfiguration:
+                LogDriver: awslogs
+                Options:
+                  awslogs-group:
+                    Fn::ImportValue: tsp-loggroup
+                  awslogs-region: !Sub "${AWS::Region}"
+                  awslogs-stream-prefix: appTask
+
+  appService:
+    Type: AWS::ECS::Service
+    DependsOn: appALB
+    Properties:
+      ServiceName: tsp-app-service
+      LaunchType: FARGATE
+      Cluster:
+        Fn::ImportValue: tsp-cluster
+        TaskDefinition: !Ref appTask
+        DesiredCount: 2
+        DeploymentConfiguration:
+          MinimumHealthyPercent: 50
+          MaximumPercent: 200
+        LoadBalancers:
+          - TargetGroupArn: !Ref appAlbTg
+            ContainerName: app
+            ContainerPort: 8000
+        NetworkConfiguration:
+          AwsvpcConfiguration:
+            AssignPublicIp: DISABLED
+            SecurityGroups:
+              - Fn::ImportValue: tsp-app-fargate-sg
+            Subnets:
+              - Fn::ImportValue: tsp-private-subnet-1a
+              - Fn::ImportValue: tsp-private-subnet-1c
+
+Outputs:
+  appALB:
+    Value: !Ref appALB
+    Export:
+      Name: tsp-app-alb
+  appALBUrl:
+    Value:
+      Fn::Join:
+        - ""
+        - - http://
+          - Fn::GetAtt: appALB.DNSName
+          - /
+    Export:
+      Name: tsp-app-alb-url
+  appAlbTg:
+    Value: !Ref appAlbTg
+    Export:
+      Name: tsp-app-alb-tg
+  appTask:
+    Value: !Ref appTask
+    Export:
+      Name: tsp-app-task
+  appService:
+    Value: !Ref appService
+    Export:
+      Name: tsp-app-service

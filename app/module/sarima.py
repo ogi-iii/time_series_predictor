@@ -57,19 +57,20 @@ def output_results(sarimax,
                 pred_begin: str,
                 pred_end: str,
                 ts: pd.Series,
-                csv: str,
+                csv_name: str,
                 index_col: str,
                 target_col: str,
                 output_fig_dir: str,
-                output_csv_dir: str,
-                ) -> None:
+                ) -> list:
     dt_now = datetime.datetime.now()
     ts_pred = sarimax.get_prediction(pred_begin, pred_end)
     pred_conf_int = ts_pred.conf_int(alpha=0.05) # 95%
 
+    plot_fname = f"{dt_now}_{csv_name.split('/')[-1].split('.')[0]}.png"
+
     # predict future values
     fig = plt.figure(figsize=(12, 5))
-    plt.title(csv.split('/')[-1].split('.')[-2], fontsize=15)
+    plt.title(csv_name.split('/')[-1].split('.')[0], fontsize=15)
     plt.plot(ts, label="original")
     plt.plot(ts_pred.predicted_mean, "--r", label="prediction")
     plt.fill_between(pred_conf_int.index, pred_conf_int.iloc[:, 0], pred_conf_int.iloc[:, 1],
@@ -78,11 +79,13 @@ def output_results(sarimax,
     plt.xlabel(index_col)
     plt.xticks(rotation=45)
     plt.legend()
-    fig.savefig(os.path.join(output_fig_dir, f"{dt_now}_{csv.split('/')[-1].split('.')[-2]}.png"), bbox_inches="tight")
+    fig.savefig(os.path.join(output_fig_dir, plot_fname), bbox_inches="tight")
     plt.close(fig)
 
     # summarise prediction results to csv
     output_df = pd.concat([ts, ts_pred.predicted_mean, pred_conf_int], axis=1)
     output_df.columns = [output_df.columns[0], f"prediction {output_df.columns[0]}",
                         pred_conf_int.columns[0], pred_conf_int.columns[1]]
-    output_df.to_csv(os.path.join(output_csv_dir, f"{dt_now}_{csv.split('/')[-1].split('.')[-2]}_pred.csv"))
+    output_df.index.name = index_col
+
+    return [plot_fname, output_df]
