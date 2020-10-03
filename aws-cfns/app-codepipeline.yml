@@ -1,0 +1,157 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: CodePipeline for ECS Fargate with CodeCommit
+
+Resources:
+
+  appCodeBuildServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+            Action: sts.AssumeRole
+      ManagedPolicyArn:
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+  appCodePipelineServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: PipelinePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Resource:
+                  - !Sub arn:aws:s3:::${ArtifactBucket}/*
+                Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:GetObjectVersion
+                  - s3:GetBucketVersioning
+              - Resource: "*"
+                Effect: Allow
+                Action:
+                  - codecommit:GetRepository
+                  - codecommit:ListBranches
+                  - codecommit:GetUploadArchiveStatus
+                  - codecommit:UploadArchive
+                  - codecommit:CancelUploadArchive
+                  - codedeploy:CreateDeployment
+                  - codedeploy:GetApplication
+                  - codedeploy:GetApplicationRevision
+                  - codedeploy:GetDeployment
+                  - codedeploy:GetDeploymentConfig
+                  - codedeploy:RegisterApplicationRevision
+                  - codebuild:StartBuild
+                  - codebuild:StopBuild
+                  - codebuild:BatchGet*
+                  - codebuild:Get*
+                  - codebuild:List*
+                  - codecommit:GetBranch
+                  - codecommit:GetCommit
+                  - s3:*
+                  - ecs:*
+                  - elasticloadbalancing:*
+                  - autoscaling:*
+                  - iam:PassRole
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+
+  appCodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: tsp-app-build-project
+      Artifacts:
+        Type: CODEPIPELINE
+      Description: tsp Building stage for py app
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        EnvironmentVariables:
+          - Name: AWS_ACCOUNT_ID
+            Value: !Ref AWS::AccountId
+          - Name: IMAGE_NAME
+            Value: tsp-ecr-py-app
+          - Name: CONTAINER_NAME
+            Value: !Sub app
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:2.0
+        Type: LINUX_CONTAINER
+        PrivilegedMode: True
+      ServiceRole: !Ref appCodeBuildServiceRole
+      Source:
+        Type: CODEPIPELINE
+      TimeoutInMinutes: 30
+
+  appCloudWatchEventRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version:  "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - events.amazonaws.com
+            Action: sts.AssumeRole
+      Policies:
+        - PolicyName: cwe-pipeline-execution
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: codepipeline:StartPipelineExecution
+                Resource: !Join
+                  - ""
+                  - - "arn:aws:codepipeline:"
+                    - !Ref "AWS::Region"
+                    - ":"
+                    - !Ref "AWS::AccountId"
+                    - ":"
+                    - !Ref appCodePipeline
+
+  appCloudWatchEventsRule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source:
+          - aws.codecommit
+        detail-type:
+          - CodeCommit Repository State Change
+        resources:
+          - Fn::ImportValue: tsp-codecommit-py-app-arn
+        detail:
+          event:
+            - referenceCreated
+            - referenceUpdated
+          referenceType:
+            - branch
+          referenceName:
+            - master
+      Targets:
+        - Arn: !Join
+          - ""
+          - - "arn:aws:codepipeline:"
+            - !Ref "AWS::Region"
+            - ":"
+            - !Ref "AWS::AccountId"
+            - ":"
+            - !Ref appCodePipeline
+          Id: tsp-app-codepipeline
+          RoleArn: !GetAtt appCloudWatchEventRole.Arn
+
+  appCodePipeLine:
+    
