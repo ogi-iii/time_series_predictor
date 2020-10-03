@@ -52,3 +52,4 @@ echo tsp-hist-api ${histapi}
 echo
 echo CMD [${uploadapi}, ${histapi}] >> Dockerfile
 echo "[Success] All shell tasks are completed."
+echo
