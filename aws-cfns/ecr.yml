@@ -2,3 +2,30 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: ECR
 
 Resources:
+  ecrPyApp:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: tsp-ecr-py-app
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+            "rules": [
+              {
+                "rulePriority": 1,
+                "description": "Delete more than 10 images",
+                "selection": {
+                  "tagStatus": "any",
+                  "countType": "imageCountMoreThan",
+                  "countNumber": 10
+                },
+                "action": {
+                  "type": "expire"
+                }
+              }
+            ]
+
+Outputs:
+  ecrPyApp:
+    Values: !GetAtt ecrPyApp.Arn
+    Export:
+      Name: tsp-ecr-py-app
