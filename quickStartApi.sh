@@ -39,7 +39,7 @@ aws cloudformation deploy \
 echo
 echo "[3/3] Write endpoints in Dockerfile..."
 echo
-cd ../../
+cd ../../appContainer/
 sed -e '$d' Dockerfile > temp.txt
 rm Dockerfile
 mv temp.txt Dockerfile
@@ -51,5 +51,6 @@ histapi=$(aws cloudformation describe-stacks --stack-name tsp-hist-api | jq '.St
 echo tsp-hist-api ${histapi}
 echo
 echo CMD [${uploadapi}, ${histapi}] >> Dockerfile
+cd ../
 echo "[Success] All shell tasks are completed."
 echo

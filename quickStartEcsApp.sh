@@ -34,6 +34,15 @@ aws cloudformation deploy \
     --stack-name tsp-ecr
 aws ecr put-image-scanning-configuration --repository-name tsp-ecr-py-app --image-scanning-configuration scanOnPush=true
 
+# Push App to ECR
+cd ../appContainer/
+aws --version
+$(aws ecr get-login --region ap-northeast-1 --no-include-email)
+REPOSITORY_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}
+docker build -t ${REPOSITORY_URI}:latest .
+docker push ${REPOSITORY_URI}:latest
+cd ../aws-cfns/
+
 # ECS-Cluster
 echo
 echo ECS Cluster
@@ -54,6 +63,13 @@ aws cloudformation deploy \
     --capabilities CAPABILITY_IAM \
     --parameter-overrides \
     ImageUri=${IMAGE_URI}
+
+# git push to CodeCommit
+cd ../appContainer/
+git add .
+git commit -m "init commit"
+git push
+cd ../aws-cfns/
 
 # CodePipeLine
 echo
