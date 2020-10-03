@@ -2,7 +2,7 @@
 ![Time-Series Predictor Index Page](./readme_imgs/top_screen.png)
 
 # Functions
-Learning & Prediction App for Future Values of Time-Series Data
+LIght Weight Machine Learning App that Learn & Predict the Future Values of Time-Series Data
 
 ## CSV Analysis
 1. Learn features of data from your csv.  
@@ -105,4 +105,15 @@ the list of technical skills for creating this app
 
 # Reference
 ## sample-data (AirPassengers.csv)
-https://www.analyticsvidhya.com/blog/2016/02/time-series-forecasting-codes-python/
+- https://www.analyticsvidhya.com/blog/2016/02/time-series-forecasting-codes-python/
+
+## images
+- https://icooon-mono.com/
+- https://icon-icons.com/
+
+## CSS
+- https://csstools.github.io/sanitize.css/
+
+## SARIMA
+- https://logics-of-blue.com/python-time-series-analysis/
+- https://momonoki2017.blogspot.com/2018/03/python9sarima.html
