@@ -35,6 +35,7 @@ Learning & Prediction App for Future Values of Time-Series Data
 You need your own AWS account. (https://aws.amazon.com/)
 
 ## Run Local
+MacOS High Sierra  
 
 ```bash
 git clone https://github.com/ogi-iii/time_series_predictor.git
@@ -47,6 +48,7 @@ quickRunLocalApp.sh
 ```
 
 ## Deploy on AWS
+AWS Cloud9 (https://aws.amazon.com/cloud9/)  
 
 ```bash
 git clone https://github.com/ogi-iii/time_series_predictor.git
