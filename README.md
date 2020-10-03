@@ -120,3 +120,6 @@ the list of technical skills for creating this app
 ## SARIMA
 - https://logics-of-blue.com/python-time-series-analysis/
 - https://momonoki2017.blogspot.com/2018/03/python9sarima.html
+
+## Architecture
+- https://www.edrawsoft.com/edraw-max/
