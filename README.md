@@ -60,6 +60,9 @@ quickStartApi.sh
 quickStartEcsApp.sh
 ```
 
+# App Architecture on AWS
+![AWS Architecture](./readme_imgs/aws_architecture.png)
+
 # Tech Skills
 the list of technical skills for creating this app
 
