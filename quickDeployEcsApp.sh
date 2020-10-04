@@ -39,6 +39,7 @@ echo ECR
 aws cloudformation deploy \
     --template-file ecr.yaml \
     --stack-name tsp-ecr
+
 aws ecr put-image-scanning-configuration --repository-name tsp-ecr-py-app --image-scanning-configuration scanOnPush=true
 
 # Push App to ECR
@@ -73,7 +74,8 @@ echo
 echo CodePipeLine
 aws cloudformation deploy \
     --template-file app-codepipeline.yaml \
-    --stack-name tsp-app-codepipeline
+    --stack-name tsp-app-codepipeline \
+    --capabilities CAPABILITY_IAM
 
 echo
 echo "[Success] All templates are deployed."

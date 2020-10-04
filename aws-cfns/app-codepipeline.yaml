@@ -150,7 +150,7 @@ Resources:
             - ":"
             - !Ref appCodePipeline
           Id: tsp-app-codepipeline
-          RoleArn: !GetAtt appCloudWatchEventRole.Arn
+          RoleArn: !GetAtt appCloudwatchEventRole.Arn
 
   appCodePipeline:
     Type: AWS::CodePipeline::Pipeline

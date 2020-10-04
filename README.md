@@ -73,7 +73,7 @@ cd time_series_predictor/
 ##
 
 # Create Resources & Deploy on AWS
-./quickStartEcsApp.sh
+./quickDeployEcsApp.sh
 ```
 
 # App Architecture on AWS
