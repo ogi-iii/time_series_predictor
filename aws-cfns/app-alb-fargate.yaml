@@ -25,7 +25,7 @@ Resources:
     Properties:
       Name: tsp-app-alb-tg
       Protocol: HTTP
-      Port: 8000
+      Port: 80
       TargetType: ip
       VpcId:
         Fn::ImportValue: tsp-vpc
@@ -46,7 +46,7 @@ Resources:
     Properties:
       LoadBalancerArn: !Ref appALB
       Protocol: HTTP
-      Port: 8000
+      Port: 80
       DefaultActions:
         - Type: forward
           TargetGroupArn: !Ref appAlbTg
@@ -82,8 +82,8 @@ Resources:
           Image: !Ref ImageUri
           PortMappings:
             - Protocol: tcp
-              HostPort: 8000
-              ContainerPort: 8000
+              HostPort: 80
+              ContainerPort: 80
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -108,7 +108,7 @@ Resources:
       LoadBalancers:
         - TargetGroupArn: !Ref appAlbTg
           ContainerName: app
-          ContainerPort: 8000
+          ContainerPort: 80
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED

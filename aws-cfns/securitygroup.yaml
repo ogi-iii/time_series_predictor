@@ -11,8 +11,8 @@ Resources:
         Fn::ImportValue: tsp-vpc
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 8000
-          ToPort: 8000
+          FromPort: 80
+          ToPort: 80
           CidrIp: 0.0.0.0/0
           Description: all
       Tags:
@@ -28,8 +28,8 @@ Resources:
         Fn::ImportValue: tsp-vpc
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 8000
-          ToPort: 8000
+          FromPort: 80
+          ToPort: 80
           SourceSecurityGroupId: !Ref appAlbSg
           Description: tsp-app-alb-sg
       Tags:
