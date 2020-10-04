@@ -60,24 +60,20 @@ git config --global user.email "YOUR_EMAIL_ADDRESS"
 git clone https://github.com/ogi-iii/time_series_predictor.git
 cd time_series_predictor/
 
-## [CAUTION!!!] You must define the variable AWS_ACCOUNT_ID in "quickStartEcsApp.sh"
-## ex) 
-## #! /bin/bash
-## AWS_ACCOUNT_ID=1234567890 <- here! (the second row)
-##
-
 # Deploy APIs on AWS
 ./quickStartApi.sh
 
-# Create Resources & Deploy on AWS
-./quickStartEcsApp.sh
-
-## [Tips] In case you get an error "no space left on device" in Cloud9,
-##        remove default docker image from Cloud9 to get enough spase.
+## [CAUTION!!!] To avoid getting an error "no space left on device" in Cloud9,
+##              remove default docker image from Cloud9 & get enough spase.
 ## ex)
+##    # check docker image id
 ## >> docker image ls
+##    # remove image that you doesn't use (lambci/lambda, etc.)
 ## >> docker image rmi -f YOUR_DOCKER_IMAGE_ID
 ##
+
+# Create Resources & Deploy on AWS
+./quickStartEcsApp.sh
 ```
 
 # App Architecture on AWS
