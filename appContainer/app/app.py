@@ -122,7 +122,7 @@ def history():
             "csv_url": hist["csv_url"],
             })
 
-    return render_template('history.html', title=title, history=history.reverse())
+    return render_template('history.html', title=title, history=history[::-1])
 
 
 if __name__ == "__main__":
