@@ -23,9 +23,10 @@ Resources:
                 }
               }
             ]
+          }
 
 Outputs:
   ecrPyApp:
-    Values: !GetAtt ecrPyApp.Arn
+    Value: !GetAtt ecrPyApp.Arn
     Export:
       Name: tsp-ecr-py-app

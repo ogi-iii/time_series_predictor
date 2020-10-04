@@ -6,8 +6,8 @@ Resources:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: 10.0.0.0/16
-      EnableDnsSupport: "true"
-      EnableDnsHostnames: "true"
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
       InstanceTenancy: default
       Tags:
         - Key: Name
@@ -29,9 +29,10 @@ Resources:
     Type: AWS::EC2::Subnet
     DependsOn: AttachGateway
     Properties:
+      VpcId: !Ref VPC
       AvailabilityZone: ap-northeast-1a
       CidrBlock: 10.0.0.0/24
-      MapPublicIpOnLaunch: "true"
+      MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
           Value: tsp-public-subnet-1a
@@ -39,9 +40,10 @@ Resources:
     Type: AWS::EC2::Subnet
     DependsOn: AttachGateway
     Properties:
+      VpcId: !Ref VPC
       AvailabilityZone: ap-northeast-1c
       CidrBlock: 10.0.1.0/24
-      MapPublicIpOnLaunch: "true"
+      MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
           Value: tsp-public-subnet-1c
@@ -50,9 +52,10 @@ Resources:
     Type: AWS::EC2::Subnet
     DependsOn: AttachGateway
     Properties:
+      VpcId: !Ref VPC
       AvailabilityZone: ap-northeast-1a
       CidrBlock: 10.0.10.0/24
-      MapPublicIpOnLaunch: "false"
+      MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
           Value: tsp-private-subnet-1a
@@ -60,9 +63,10 @@ Resources:
     Type: AWS::EC2::Subnet
     DependsOn: AttachGateway
     Properties:
+      VpcId: !Ref VPC
       AvailabilityZone: ap-northeast-1c
       CidrBlock: 10.0.11.0/24
-      MapPublicIpOnLaunch: "false"
+      MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
           Value: tsp-private-subnet-1c
@@ -103,10 +107,10 @@ Resources:
     Type: AWS::EC2::RouteTable
     DependsOn: AttachGateway
     Properties:
-    VpcId: !Ref VPC
-    Tags:
-      - Key: Name
-        Value: tsp-public-rt
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: tsp-public-rt
   PublicRoute:
     Type: AWS::EC2::Route
     DependsOn: AttachGateway
@@ -119,10 +123,10 @@ Resources:
     Type: AWS::EC2::RouteTable
     DependsOn: NAT1a
     Properties:
-    VpcId: !Ref VPC
-    Tags:
-      - Key: Name
-        Value: tsp-private-rt1a
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: tsp-private-rt1a
   PrivateRoute1a:
     Type: AWS::EC2::Route
     DependsOn: NAT1a
@@ -135,11 +139,11 @@ Resources:
     Type: AWS::EC2::RouteTable
     DependsOn: NAT1c
     Properties:
-    VpcId: !Ref VPC
-    Tags:
-      - Key: Name
-        Value: tsp-private-rt1c
-  PrivateRoute1a:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: tsp-private-rt1c
+  PrivateRoute1c:
     Type: AWS::EC2::Route
     DependsOn: NAT1c
     Properties:
