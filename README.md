@@ -51,11 +51,24 @@ cd time_series_predictor
 AWS Cloud9 (https://aws.amazon.com/cloud9/)  
 
 ```bash
+git config --global credential.helper '!aws codecommit credential-helper $@'
+git config --global credential.UseHttpPath true
+
+git config --global user.name "YOUR_NAME"
+git config --global user.email "YOUR_EMAIL_ADDRESS"
+
 git clone https://github.com/ogi-iii/time_series_predictor.git
-cd time_series_predictor
+cd time_series_predictor/
+
+## [CAUTION!!!] You must define the variable AWS_ACCOUNT_ID in "quickStartEcsApp.sh"
+## ex) 
+## #! /bin/bash
+## AWS_ACCOUNT_ID=1234567890 <- here! (the second row)
+##
 
 # Deploy APIs on AWS
 ./quickStartApi.sh
+
 # Create Resources & Deploy on AWS
 ./quickStartEcsApp.sh
 ```
