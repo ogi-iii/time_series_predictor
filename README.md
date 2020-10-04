@@ -34,10 +34,10 @@ LIght Weight Machine Learning App that Learn & Predict the Future Values of Time
 # Usage
 You need your own AWS account. (https://aws.amazon.com/)
 
-### [CAUTION]
+### Warnings
 
 ```bash
-## - change S3 bucket name of these files.
+## [CAUTION!!!] change S3 bucket name of these files.
 ##
 ##  1. api/tsp-upload/template.yaml
 ##
@@ -83,11 +83,11 @@ You need your own AWS account. (https://aws.amazon.com/)
 ##       --s3-bucket tsp-hist-template-ogi \   <- here!
 ##       --output-template-file packaged-template.yaml
 ##
+```
 
-
-## - To avoid getting an error "no space left on device" in Cloud9,
-##   remove default docker image from Cloud9 & get enough spase.
-##
+```bash
+## [CAUTION!!!] To avoid getting an error "no space left on device" in Cloud9,
+##              remove default docker image from Cloud9 & get enough spase.
 ## ex)
 ##    # check docker image id
 ## >> docker image ls
