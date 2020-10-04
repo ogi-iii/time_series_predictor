@@ -100,23 +100,23 @@ Resources:
       LaunchType: FARGATE
       Cluster:
         Fn::ImportValue: tsp-cluster
-        TaskDefinition: !Ref appTask
-        DesiredCount: 2
-        DeploymentConfiguration:
-          MinimumHealthyPercent: 50
-          MaximumPercent: 200
-        LoadBalancers:
-          - TargetGroupArn: !Ref appAlbTg
-            ContainerName: app
-            ContainerPort: 8000
-        NetworkConfiguration:
-          AwsvpcConfiguration:
-            AssignPublicIp: DISABLED
-            SecurityGroups:
-              - Fn::ImportValue: tsp-app-fargate-sg
-            Subnets:
-              - Fn::ImportValue: tsp-private-subnet-1a
-              - Fn::ImportValue: tsp-private-subnet-1c
+      TaskDefinition: !Ref appTask
+      DesiredCount: 2
+      DeploymentConfiguration:
+        MinimumHealthyPercent: 50
+        MaximumPercent: 200
+      LoadBalancers:
+        - TargetGroupArn: !Ref appAlbTg
+          ContainerName: app
+          ContainerPort: 8000
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Fn::ImportValue: tsp-app-fargate-sg
+          Subnets:
+            - Fn::ImportValue: tsp-private-subnet-1a
+            - Fn::ImportValue: tsp-private-subnet-1c
 
 Outputs:
   appALB:
