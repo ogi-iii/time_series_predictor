@@ -3,8 +3,7 @@ cd api/
 
 # TSPUploadLambdaApi
 echo
-echo "[1/3] Deploying tsp-upload-api..."
-echo
+echo "Deploy tsp-upload-api"
 aws s3 mb s3://tsp-upload-template-ogi
 cd tsp-upload/
 
@@ -20,8 +19,7 @@ aws cloudformation deploy \
 
 # TSPHistoryLambdaApi
 echo
-echo "[2/3] Deploying tsp-hist-api..."
-echo
+echo "Deploy tsp-hist-api"
 aws s3 mb s3://tsp-hist-template-ogi
 cd ../tsp-history/
 
@@ -37,8 +35,7 @@ aws cloudformation deploy \
 
 # Edit Dockerfile
 echo
-echo "[3/3] Write endpoints in Dockerfile..."
-echo
+echo "Write endpoints in Dockerfile"
 cd ../../appContainer/
 sed -e '$d' Dockerfile > temp.txt
 rm Dockerfile
@@ -53,4 +50,3 @@ echo
 echo CMD [${uploadapi}, ${histapi}] >> Dockerfile
 cd ../
 echo "[Success] All shell tasks are completed."
-echo

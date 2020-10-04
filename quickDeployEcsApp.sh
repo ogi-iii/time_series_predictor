@@ -79,4 +79,3 @@ aws cloudformation deploy \
 
 echo
 echo "[Success] All templates are deployed."
-echo
