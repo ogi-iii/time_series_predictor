@@ -79,3 +79,6 @@ aws cloudformation deploy \
 
 echo
 echo "[Success] All templates are deployed."
+echo
+app_url=$(aws cloudformation describe-stacks --stack-name tsp-app-alb-fargate | jq '.Stacks'[0]'.Outputs'[4]'.OutputValue')
+echo App URL: ${app_url}
