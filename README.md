@@ -71,6 +71,13 @@ cd time_series_predictor/
 
 # Create Resources & Deploy on AWS
 ./quickStartEcsApp.sh
+
+## [Tips] In case you get an error "no space left on device" in Cloud9,
+##        remove default docker image from Cloud9 to get enough spase.
+## ex)
+## >> docker image ls
+## >> docker image rmi -f YOUR_DOCKER_IMAGE_ID
+##
 ```
 
 # App Architecture on AWS
