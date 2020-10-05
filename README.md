@@ -38,12 +38,14 @@ You need your own AWS account. (https://aws.amazon.com/)
 MacOS High Sierra  
 
 ```bash
+# Clone this Repository
 git clone https://github.com/ogi-iii/time_series_predictor.git
 cd time_series_predictor
 
 # Deploy APIs on AWS
 ./quickStartApi.sh
-# Run Local Environment
+
+# Run App on local environment
 ./quickRunLocalApp.sh
 ```
 
@@ -51,19 +53,22 @@ cd time_series_predictor
 AWS Cloud9 (https://aws.amazon.com/cloud9/)  
 
 ```bash
+# Add credentials into git config
 git config --global credential.helper '!aws codecommit credential-helper $@'
 git config --global credential.UseHttpPath true
 
+# Register your information into git config
 git config --global user.name "YOUR_NAME"
 git config --global user.email "YOUR_EMAIL_ADDRESS"
 
+# Clone this Repository
 git clone https://github.com/ogi-iii/time_series_predictor.git
 cd time_series_predictor/
 
 # Deploy APIs on AWS
 ./quickStartApi.sh
 
-# Create Resources & Deploy on AWS
+# Create resources & Deploy on AWS
 ./quickDeployEcsApp.sh
 ```
 
@@ -72,17 +77,19 @@ If you get an error **"no space left on device"** in Cloud9,
 remove default other docker image from Cloud9 & get enough space.
 
 ```bash
-# check docker image id
+# Check docker image id
 docker image ls
-# remove image that you don't use [ex) lambci/lambda, etc.]
+
+# Remove image that you don't use
+# ex) lambci/lambda, etc.
 docker image rmi -f YOUR_DOCKER_IMAGE_ID
 ```
 
-# App Architecture on AWS
+# App Architecture Diagram on AWS
 ![AWS Architecture](./readme_imgs/aws_architecture.png)
 
 # Tech Skills
-the list of technical skills for creating this app
+The list of technical skills for creating this app
 
 ## AWS  
 - Infrastructure as Code  
@@ -139,5 +146,5 @@ the list of technical skills for creating this app
 - https://logics-of-blue.com/python-time-series-analysis/
 - https://momonoki2017.blogspot.com/2018/03/python9sarima.html
 
-## Architecture
+## Architecture Diagram
 - https://www.edrawsoft.com/edraw-max/
