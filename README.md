@@ -20,7 +20,7 @@ LIght Weight Machine Learning App that Learn & Predict the Future Values of Time
 **Each line of the table can be downloaded as csv or plot image!**
 
 # Requirements
-## MacOS High Sierra v10.13.6 (local)
+## MacOS High Sierra v10.13.6
 - Python 3.7.3
 - Docker 19.03.12
 - aws-cli 1.18.66
@@ -34,8 +34,8 @@ LIght Weight Machine Learning App that Learn & Predict the Future Values of Time
 # Usage
 You need your own AWS account. (https://aws.amazon.com/)
 
-## Run Local
-MacOS High Sierra  
+## Run App on Local Container
+MacOS High Sierra
 
 ```bash
 # Clone this Repository
@@ -45,12 +45,12 @@ cd time_series_predictor
 # Deploy APIs on AWS
 ./quickStartApi.sh
 
-# Run App on local environment
+# Run App on local Docker container
 ./quickRunLocalApp.sh
 ```
 
 ## Deploy on AWS
-AWS Cloud9 (https://aws.amazon.com/cloud9/)  
+AWS Cloud9 (https://aws.amazon.com/cloud9/)
 
 ```bash
 # Add credentials into git config
@@ -68,7 +68,7 @@ cd time_series_predictor/
 # Deploy APIs on AWS
 ./quickStartApi.sh
 
-# Create resources & Deploy on AWS
+# Create architecture & Deploy App on AWS
 ./quickDeployEcsApp.sh
 ```
 
@@ -77,7 +77,7 @@ If you get an error **"no space left on device"** in Cloud9,
 remove default other docker image from Cloud9 & get enough space.
 
 ```bash
-# Check docker image id
+# Check Docker image id
 docker image ls
 
 # Remove image that you don't use
@@ -91,40 +91,41 @@ docker image rmi -f YOUR_DOCKER_IMAGE_ID
 # Tech Skills
 The list of technical skills for creating this app
 
-## AWS  
-- Infrastructure as Code  
+## AWS
+- Infrastructure as Code
   - VPC
-  - Cloudformation  
-  
-- Serverless API  
-  - Lambda  
-  - API Gateway  
-  - S3  
-  - Dynamo DB  
-  
-- Container Service  
-  - ECS  
-  - ECR  
-  - Fargate  
-  
+  - Load Balancer
+  - Cloudformation
+
+- Serverless API
+  - Lambda
+  - API Gateway
+  - S3
+  - Dynamo DB
+
+- Container Service
+  - ECS
+  - ECR
+  - Fargate
+
 - CI/CD
-  - CodePipeLine  
-  - CodeBuild  
-  - CodeCommit  
+  - CodePipeLine
+  - CodeBuild
+  - CodeCommit
 
 ## Others
-- Python   
+- Python
   - flask
   - numpy
   - pandas
   - matplotlib
   - scipy
-  - statsmodels  
+  - statsmodels
   - etc.
-  
-- Machine Learning & Statistics   
+
+- Machine Learning & Statistics
   - SARIMA
-  
+
 - Docker
 
 - Shell Script
