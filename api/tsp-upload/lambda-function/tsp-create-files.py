@@ -45,7 +45,7 @@ def lambda_handler(event, context):
 def _output_files(s3, bct_name, body, b_content, type_str, date_time):
     f_name = body['fname'].split('/')[-1].split('.')[0]
     key = f'{date_time}_{f_name}.{type_str}'
-    url = f"https://{bct_name}.s3-ap-northeast-1.amazonaws.com/{key.replace(' ', '_').replace(':', '+')}"
+    url = f"https://{bct_name}.s3-ap-northeast-1.amazonaws.com/{key.replace(' ', '+').replace(':', '%3A')}"
     obj = s3.Object(bct_name, key)
     if type_str == 'png' or type_str == 'jpg':
         contents = base64.b64decode(body[b_content].encode('utf-8'))
