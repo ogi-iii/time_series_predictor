@@ -38,8 +38,15 @@ aws cloudformation deploy \
     --stack-name tsp-codecommit
 
 # git push to CodeCommit
+echo
+echo git push to CodeCommit
 cd ../
-git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/tsp-codecommit-py-app
+if [ -d tsp-codecommit-py-app ]; then
+    rm -r tsp-codecommit-py-app
+    git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/tsp-codecommit-py-app
+else
+    git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/tsp-codecommit-py-app
+fi
 cd appContainer/
 cp -r * ../tsp-codecommit-py-app/
 cd ../tsp-codecommit-py-app/
@@ -63,6 +70,8 @@ aws cloudformation deploy \
 aws ecr put-image-scanning-configuration --repository-name tsp-ecr-py-app --image-scanning-configuration scanOnPush=true
 
 # Push App to ECR
+echo
+echo Push App to ECR
 cd ../tsp-codecommit-py-app/
 aws --version
 $(aws ecr get-login --region ap-northeast-1 --no-include-email)
