@@ -34,7 +34,7 @@ LIght Weight Machine Learning App that Learn & Predict the Future Values of Time
 # Usage
 You need your own AWS account. (https://aws.amazon.com/)
 
-## Run Local
+## [Case 1] Run Local
 MacOS High Sierra  
 
 ```bash
@@ -49,7 +49,7 @@ cd time_series_predictor
 ./quickRunLocalApp.sh
 ```
 
-## Deploy on AWS
+## [Case 2] Deploy on AWS
 AWS Cloud9 (https://aws.amazon.com/cloud9/)  
 
 ```bash
@@ -72,7 +72,7 @@ cd time_series_predictor/
 ./quickDeployEcsApp.sh
 ```
 
-## [Tips] Trouble Shooting
+## [Tips!] Trouble Shooting
 If you get an error **"no space left on device"** in Cloud9,  
 remove default other docker image from Cloud9 & get enough space.
 
