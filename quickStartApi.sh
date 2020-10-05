@@ -5,6 +5,7 @@ ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
 # TSPUploadLambdaApi
 echo
 echo "Deploy tsp-upload-api"
+echo
 aws s3 mb s3://tsp-upload-template-${ACCOUNT_ID}
 cd tsp-upload/
 
@@ -21,6 +22,7 @@ aws cloudformation deploy \
 # TSPHistoryLambdaApi
 echo
 echo "Deploy tsp-hist-api"
+echo
 aws s3 mb s3://tsp-hist-template-${ACCOUNT_ID}
 cd ../tsp-history/
 
@@ -51,3 +53,4 @@ echo
 echo CMD [${uploadapi}, ${histapi}] >> Dockerfile
 cd ../
 echo "[Success] All shell tasks are completed."
+echo
