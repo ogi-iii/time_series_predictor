@@ -21,14 +21,18 @@ Resources:
 
   ImgBucket:
     Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
     Properties:
-      BucketName: tsp-img-ogi
+      BucketName: !Join
+                  - ""
+                  - - "tsp-img-"
+                    - !Ref AWS::AccountId
   CsvBucket:
     Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
     Properties:
-      BucketName: tsp-csv-ogi
+      BucketName: !Join
+                  - ""
+                  - - "tsp-csv-"
+                    - !Ref AWS::AccountId
 
   TSPDynamoDbTbl:
     Type: AWS::Serverless::SimpleTable

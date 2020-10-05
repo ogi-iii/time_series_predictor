@@ -6,10 +6,12 @@ import base64
 img_s3 = boto3.resource('s3')
 csv_s3 = boto3.resource('s3')
 dynamodb_tsp_history_tbl = boto3.resource('dynamodb').Table('tsp-history')
+sts = boto3.client('sts').get_caller_identity()
 
 def lambda_handler(event, context):
-    img_bucket = 'tsp-img-ogi'
-    csv_bucket = 'tsp-csv-ogi'
+    aws_id = str(sts['Account'])
+    img_bucket = 'tsp-img-' + aws_id
+    csv_bucket = 'tsp-csv-' + aws_id
     date_time = str(datetime.datetime.now())
     try:
         body = json.loads(event.get("body"))

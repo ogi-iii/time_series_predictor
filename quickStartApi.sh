@@ -1,15 +1,16 @@
 #! /bin/bash -eu
 cd api/
+ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
 
 # TSPUploadLambdaApi
 echo
 echo "Deploy tsp-upload-api"
-aws s3 mb s3://tsp-upload-template-ogi
+aws s3 mb s3://tsp-upload-template-${ACCOUNT_ID}
 cd tsp-upload/
 
 aws cloudformation package \
     --template-file template.yaml \
-    --s3-bucket tsp-upload-template-ogi \
+    --s3-bucket tsp-upload-template-${ACCOUNT_ID} \
     --output-template-file packaged-template.yaml
 
 aws cloudformation deploy \
@@ -20,12 +21,12 @@ aws cloudformation deploy \
 # TSPHistoryLambdaApi
 echo
 echo "Deploy tsp-hist-api"
-aws s3 mb s3://tsp-hist-template-ogi
+aws s3 mb s3://tsp-hist-template-${ACCOUNT_ID}
 cd ../tsp-history/
 
 aws cloudformation package \
     --template-file template.yaml \
-    --s3-bucket tsp-hist-template-ogi \
+    --s3-bucket tsp-hist-template-${ACCOUNT_ID} \
     --output-template-file packaged-template.yaml
 
 aws cloudformation deploy \
