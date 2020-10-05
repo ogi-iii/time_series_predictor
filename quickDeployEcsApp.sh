@@ -6,6 +6,11 @@ echo
 echo VPC
 aws cloudformation deploy \
     --template-file vpc.yaml \
+    --stack-name tsp-vpc \
+    --no-execute-changeset
+
+aws cloudformation deploy \
+    --template-file vpc.yaml \
     --stack-name tsp-vpc
 
 # SecurityGroup
@@ -13,11 +18,21 @@ echo
 echo SecurityGroup
 aws cloudformation deploy \
     --template-file securitygroup.yaml \
+    --stack-name tsp-securitygroup \
+    --no-execute-changeset
+
+aws cloudformation deploy \
+    --template-file securitygroup.yaml \
     --stack-name tsp-securitygroup
 
 # CodeCommit
 echo
 echo CodeCommit
+aws cloudformation deploy \
+    --template-file codecommit.yaml \
+    --stack-name tsp-codecommit \
+    --no-execute-changeset
+
 aws cloudformation deploy \
     --template-file codecommit.yaml \
     --stack-name tsp-codecommit
@@ -36,6 +51,11 @@ cd ../aws-cfns/
 # ECR
 echo
 echo ECR
+aws cloudformation deploy \
+    --template-file ecr.yaml \
+    --stack-name tsp-ecr \
+    --no-execute-changeset
+
 aws cloudformation deploy \
     --template-file ecr.yaml \
     --stack-name tsp-ecr
@@ -57,6 +77,11 @@ echo
 echo ECS Cluster
 aws cloudformation deploy \
     --template-file ecs-cluster.yaml \
+    --stack-name tsp-ecs-cluster \
+    --no-execute-changeset
+
+aws cloudformation deploy \
+    --template-file ecs-cluster.yaml \
     --stack-name tsp-ecs-cluster
 
 # App-ALB-Fargate
@@ -67,11 +92,25 @@ aws cloudformation deploy \
     --stack-name tsp-app-alb-fargate \
     --capabilities CAPABILITY_IAM \
     --parameter-overrides \
+    ImageUri=${IMAGE_URI} \
+    --no-execute-changeset
+
+aws cloudformation deploy \
+    --template-file app-alb-fargate.yaml \
+    --stack-name tsp-app-alb-fargate \
+    --capabilities CAPABILITY_IAM \
+    --parameter-overrides \
     ImageUri=${IMAGE_URI}
 
 # CodePipeLine
 echo
 echo CodePipeLine
+aws cloudformation deploy \
+    --template-file app-codepipeline.yaml \
+    --stack-name tsp-app-codepipeline \
+    --capabilities CAPABILITY_IAM \
+    --no-execute-changeset
+
 aws cloudformation deploy \
     --template-file app-codepipeline.yaml \
     --stack-name tsp-app-codepipeline \
