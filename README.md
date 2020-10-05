@@ -49,6 +49,9 @@ cd time_series_predictor
 ./quickRunLocalApp.sh
 ```
 
+### Stacks on Cloudformation
+![api stacks list](./readme_imgs/api-stacks-list.png)
+
 ## [Case 2] Deploy App on AWS
 AWS Cloud9 (https://aws.amazon.com/cloud9/)
 
@@ -71,6 +74,10 @@ cd time_series_predictor/
 # Create architecture & Deploy App on AWS
 ./quickDeployEcsApp.sh
 ```
+
+### Stacks on Cloudformation
+![app stacks list](./readme_imgs/app-stacks-list.png)
+
 
 ## [Tips!] Trouble Shooting
 If you get an error **"no space left on device"** in Cloud9,  
