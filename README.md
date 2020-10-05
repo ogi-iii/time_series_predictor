@@ -49,7 +49,7 @@ cd time_series_predictor
 ./quickRunLocalApp.sh
 ```
 
-### Stacks on Cloudformation
+### The Result of Stacks on Cloudformation
 ![api stacks list](./readme_imgs/api-stacks-list.png)
 
 ## [Case 2] Deploy App on AWS
@@ -75,7 +75,7 @@ cd time_series_predictor/
 ./quickDeployEcsApp.sh
 ```
 
-### Stacks on Cloudformation
+### The Result of Stacks on Cloudformation
 ![app stacks list](./readme_imgs/app-stacks-list.png)
 
 
