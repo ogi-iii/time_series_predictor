@@ -19,6 +19,9 @@ LIght Weight Machine Learning App that Learn & Predict the Future Values of Time
 2. Show them as a table.  
 **Each line of the table can be downloaded as csv or plot image!**
 
+# Demo Movie
+![Time-Series Predictor Demo](./readme_imgs/app-demo.gif)
+
 # Requirements
 ## MacOS High Sierra v10.13.6
 - Python 3.7.3
