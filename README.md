@@ -1,4 +1,4 @@
-# WIP: Time-Series Predictor
+# Time-Series Predictor
 ![Time-Series Predictor Index Page](./readme_imgs/top_screen.png)
 
 # Functions
@@ -34,68 +34,6 @@ LIght Weight Machine Learning App that Learn & Predict the Future Values of Time
 # Usage
 You need your own AWS account. (https://aws.amazon.com/)
 
-### Warnings
-
-```bash
-## [CAUTION!!!] change S3 bucket name of these files.
-##
-##  1. api/tsp-upload/template.yaml
-##
-##   def lambda_handler(event, context):
-##       img_bucket = 'tsp-img-ogi'   <- here!
-##       csv_bucket = 'tsp-csv-ogi'   <- here!
-##       date_time = str(datetime.datetime.now())
-##
-##  2. api/tsp-upload/lambda-function/tsp-create-files.py
-##
-##   ImgBucket:
-##     Type: AWS::S3::Bucket
-##     DeletionPolicy: Retain
-##     Properties:
-##       BucketName: tsp-img-ogi   <- here!
-##   CsvBucket:
-##     Type: AWS::S3::Bucket
-##     DeletionPolicy: Retain
-##     Properties:
-##       BucketName: tsp-csv-ogi   <- here!
-##
-##  3. api/tsp-upload/template.yaml
-##
-##   # TSPUploadLambdaApi (line: 4,13)
-##   echo
-##   echo "Deploy tsp-upload-api"
-##   aws s3 mb s3://tsp-upload-template-ogi   <- here!
-##   cd tsp-upload/
-##
-##   aws cloudformation package \
-##       --template-file template.yaml \
-##       --s3-bucket tsp-upload-template-ogi \   <- here!
-##       --output-template-file packaged-template.yaml
-##
-##   # TSPHistoryLambdaApi (line: 20,29)
-##   echo
-##   echo "Deploy tsp-hist-api"
-##   aws s3 mb s3://tsp-hist-template-ogi   <- here!
-##   cd ../tsp-history/
-##
-##   aws cloudformation package \
-##       --template-file template.yaml \
-##       --s3-bucket tsp-hist-template-ogi \   <- here!
-##       --output-template-file packaged-template.yaml
-##
-```
-
-```bash
-## [CAUTION!!!] To avoid getting an error "no space left on device" in Cloud9,
-##              remove default docker image from Cloud9 & get enough spase.
-## ex)
-##    # check docker image id
-## >> docker image ls
-##    # remove image that you doesn't use (lambci/lambda, etc.)
-## >> docker image rmi -f YOUR_DOCKER_IMAGE_ID
-##
-```
-
 ## Run Local
 MacOS High Sierra  
 
@@ -127,6 +65,17 @@ cd time_series_predictor/
 
 # Create Resources & Deploy on AWS
 ./quickDeployEcsApp.sh
+```
+
+## [Tips] Trouble Shooting
+If you get an error **"no space left on device"** in Cloud9,  
+remove default other docker image from Cloud9 & get enough space.
+
+```bash
+# check docker image id
+docker image ls
+# remove image that you don't use [ex) lambci/lambda, etc.]
+docker image rmi -f YOUR_DOCKER_IMAGE_ID
 ```
 
 # App Architecture on AWS
