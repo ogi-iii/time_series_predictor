@@ -14,13 +14,13 @@ sns.set() #plot preparation
 import warnings
 warnings.filterwarnings('ignore') # ignore warning
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, flash
 import tempfile
 from module.sarima import *
 
 
 app = Flask(__name__)
-
+app.config["SECRET_KEY"] = "tsp20201009"
 
 @app.context_processor # clear web cash
 def add_staticfile():
@@ -53,6 +53,11 @@ def results():
     target_col = request.form["targetColumn"]
     pred_begin = str(request.form["predBeginDate"]).replace('/', '-') + " " + str(request.form["predBeginTime"])
     pred_end = str(request.form["predEndDate"]).replace('/', '-') + " " + str(request.form["predEndTime"])
+    if request.form.get('missing'):
+        missing = True
+    else:
+        missing = False
+
     # learning process
     with tempfile.NamedTemporaryFile() as tf:
         csv = tf.name
@@ -61,8 +66,19 @@ def results():
                     index_col,
                     target_col
                     )
-    p, d, q, sfq = select_order(ts, d = 1, freq_order = 5)
-    sarimax = fit_sarima(ts, p, d, q, sfq, sp = 1, sd = 1, sq = 1)
+
+    if ts.isna().any(): # include nan
+        if not missing: # checking flag
+            f_message = 'Make sure the checkbox "Data contains missing values" before analysis.'
+            flash(f_message, 'missing')
+            return redirect(url_for('analysis'))
+
+    sarimax = fit_sarima(ts,
+                    sp = 1,
+                    sd = 1,
+                    sq = 1,
+                    missing = missing
+                    )
     # output csv & image
     with tempfile.TemporaryDirectory() as temp_dir:
         plot_fname, output_df = output_results(sarimax,
@@ -73,6 +89,7 @@ def results():
                                             index_col,
                                             target_col,
                                             temp_dir,
+                                            missing
                                             )
         with open(os.path.join(temp_dir, plot_fname), "rb") as f:
             img_base64 = base64.b64encode(f.read()).decode('utf-8')
