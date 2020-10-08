@@ -12,7 +12,7 @@ LIght Weight Machine Learning App that Learn & Predict the Future Values of Time
 
 ### Internal Machine Learning Methods
 - Automatic SARIMA  
-- Automatically fill in missing values with splines & SARIMA  
+- Automatically fill in missing values with splines & SARIMA (preparing now!)  
 **The others comming soon...**
 
 ## Analytics History
