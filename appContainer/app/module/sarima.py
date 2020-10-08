@@ -16,34 +16,49 @@ def read_data(csv: str,
     return pd.read_csv(csv, index_col=index_col, parse_dates=True, dtype=float)[target_col]
 
 
+def _fill_missing(ts: pd.Series,
+            method: str = 'cubic'
+            ) -> pd.Series:
+    return ts.interpolate(method=method, limit_direction='forward', limit_area='inside')
+
+
 def _estimate_freq(ts_diff: pd.Series,
-                freq_order: int = 5
+                freq_order: int = 5,
+                missing: str = False
                 ) -> int:
-    fft = np.fft.fft(ts_diff)
-    fft_abs = np.abs(fft)
-    return int(signal.argrelmax(fft_abs, order=freq_order)[0][0]) # frequency
+    if missing:
+        freq = sm.tsa.stattools.acf(ts_diff)
+    else:
+        fft = np.fft.fft(ts_diff)
+        freq = np.abs(fft)
+    return int(signal.argrelmax(freq, order=freq_order)[0][0]) # frequency
 
 
-def select_order(ts: pd.Series,
+def _select_order(ts: pd.Series,
                 d: int = 1,
-                freq_order: int = 5
+                freq_order: int = 5,
+                missing: str = False
                 ) -> list:
+    if missing:
+        ts = _fill_missing(ts, method='cubic')
     ts_diff = ts.diff(d).dropna() # difference time-series
     aosi = sm.tsa.arma_order_select_ic(ts_diff, ic='aic', trend='nc')
-    p, q = aosi["aic_min_order"]
-    sfq = _estimate_freq(ts_diff, freq_order)
+    p, q = aosi['aic_min_order']
+    sfq = _estimate_freq(ts_diff, freq_order, missing)
     return [p, d, q, sfq]
 
 
 def fit_sarima(ts: pd.Series,
-            p: int,
-            d: int,
-            q: int,
-            sfq: int,
             sp: int = 1,
             sd: int = 1,
-            sq: int = 1
+            sq: int = 1,
+            missing: str = False
             ):
+    p, d, q, sfq = _select_order(ts,
+                d = 1,
+                freq_order = 5,
+                missing = missing
+                )
     sarimax = sm.tsa.SARIMAX(ts,
                             order=(p, d, q),
                             seasonal_order=(sp, sd, sq, sfq),
@@ -61,6 +76,7 @@ def output_results(sarimax,
                 index_col: str,
                 target_col: str,
                 output_fig_dir: str,
+                missing: str = False
                 ) -> list:
     dt_now = datetime.datetime.now()
     ts_pred = sarimax.get_prediction(pred_begin, pred_end)
@@ -71,6 +87,9 @@ def output_results(sarimax,
     # predict future values
     fig = plt.figure(figsize=(12, 5))
     plt.title(csv_name.split('/')[-1].split('.')[0], fontsize=15)
+    if missing:
+        ts_filled = _fill_missing(ts, method='cubic')
+        plt.plot(ts_filled, "g", label="filled")
     plt.plot(ts, label="original")
     plt.plot(ts_pred.predicted_mean, "--r", label="prediction")
     plt.fill_between(pred_conf_int.index, pred_conf_int.iloc[:, 0], pred_conf_int.iloc[:, 1],
