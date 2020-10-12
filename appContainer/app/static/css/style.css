@@ -137,3 +137,14 @@ td, .td {
 .r-d-img {
     width: 50px;
 }
+
+.missing {
+    color: red;
+    padding-bottom: 10px;
+    font-size: 20px;
+    text-align: left;
+}
+
+#missing {
+    width: 30px;
+}

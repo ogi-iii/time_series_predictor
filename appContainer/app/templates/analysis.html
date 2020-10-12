@@ -6,6 +6,15 @@
 <h2 class="subTitle">CSV Analysis</h2>
 <div class="form-wrapper">
     <form action="/results" method="post" enctype="multipart/form-data">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
         <div class="form-group">
             <label for="csvFile">Time-Series CSV File</label>
             <input type="file" class="form-control-file" id="csvFile" name="csvFile" aria-describedby="fileHelp" accept=".csv" required>
@@ -34,6 +43,10 @@
         <div class="form-group">
             <label for="predEndTime">Prediction End Time (option)</label>
             <input type="time" class="form-control" id="predEndTime" name="predEndTime">
+        </div>
+        <div class="form-group">
+            <label for="missing">Data contains missing values (option)</label>
+            <input type="checkbox" class="form-control" id="missing" name="missing">
         </div>
         <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
     </form>
