@@ -69,7 +69,7 @@ def results():
 
     if ts.isna().any(): # include nan
         if not missing: # checking flag
-            f_message = 'Make sure the checkbox "Data contains missing values" before analysis.'
+            f_message = '[Missing Values ERROR]: Make sure the checkbox at the bottom.'
             flash(f_message, 'missing')
             return redirect(url_for('analysis'))
 
