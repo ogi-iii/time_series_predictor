@@ -146,10 +146,10 @@ The list of technical skills for creating this app
 - HTML/CSS
 
 # Reference
-## sample data (AirPassengers.csv)
+## Sample Data (AirPassengers.csv)
 - https://www.analyticsvidhya.com/blog/2016/02/time-series-forecasting-codes-python/
 
-## images / icons
+## Images / Icons
 - https://icooon-mono.com/
 - https://icon-icons.com/
 
