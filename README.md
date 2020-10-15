@@ -123,6 +123,7 @@ The list of technical skills for creating this app
   - CodePipeLine
   - CodeBuild
   - CodeCommit
+  - CodeDeploy
 
 ## Others
 - Python
@@ -145,10 +146,10 @@ The list of technical skills for creating this app
 - HTML/CSS
 
 # Reference
-## sample-data (AirPassengers.csv)
+## sample data (AirPassengers.csv)
 - https://www.analyticsvidhya.com/blog/2016/02/time-series-forecasting-codes-python/
 
-## images
+## images / icons
 - https://icooon-mono.com/
 - https://icon-icons.com/
 
