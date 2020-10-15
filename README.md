@@ -12,7 +12,7 @@ LIght Weight Machine Learning App that Learn & Predict the Future Values of Time
 
 ### Internal Machine Learning Methods
 - Automatic SARIMA  
-- Automatically filling in missing values with Spline Interpolation (Optional)   
+- Automatically filling in missing values with Cubic Spline Interpolation (Optional)   
 **The others comming soon...**
 
 ## Analytics History
@@ -136,7 +136,7 @@ The list of technical skills for creating this app
 
 - Machine Learning & Statistics
   - SARIMA
-  - Spline Interpolation
+  - Cubic Spline Interpolation
 
 - Docker
 
